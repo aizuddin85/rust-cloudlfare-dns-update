@@ -62,5 +62,5 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build --tag cloudflare-dns-up
+        docker build --tag cloudflare-dns-up .
 

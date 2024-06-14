@@ -11,6 +11,7 @@ struct DnsRecord {
     name: String,
     content: String,
     ttl: u32,
+    proxied: bool,
 }
 
 async fn get_public_ip() -> Result<String, Box<dyn std::error::Error>> {
@@ -27,6 +28,7 @@ async fn update_dns_record(public_ip: &str, url: &str, auth_email: &str, auth_ke
         name: dns_name.to_string(),
         content: public_ip.to_string(),
         ttl: 120,
+        proxied: true,
     };
 
     let response = client
