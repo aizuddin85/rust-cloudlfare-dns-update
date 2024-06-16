@@ -1,0 +1,39 @@
+replicaCount: 1
+
+image:
+  repository: registry.apps.aizuddinzali.com:5000/cloudflare-dns-update/rust-updater
+  tag: latest
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+env:
+  CLOUDFLARE_API_URL: "https://api.cloudflare.com/client/v4/zones/f1ed32ad43ea28a3cfdfa4a3da10c9f6/dns_records/512399a7512c61ee627ee334a9793713"
+  CLOUDFLARE_DNS_NAME: "www.aizuddinzali.com"
+  SLEEP_DURATION: "10"
+
+secret:
+  name: cloudflare-secrets
+  data:
+    CLOUDFLARE_AUTH_EMAIL: ""
+    CLOUDFLARE_AUTH_KEY: ""
+
+imagePullSecrets:
+  - name: registry-secret
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+securityContext: {}
+
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
