@@ -19,8 +19,7 @@ secret:
     CLOUDFLARE_AUTH_EMAIL: ""
     CLOUDFLARE_AUTH_KEY: ""
 
-imagePullSecrets:
-  - name: registry-secret
+imagePullSecrets: registry-secret
 
 serviceAccount:
   create: true
