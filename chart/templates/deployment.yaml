@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cloudflare-dns-updater.fullname" . }}
+  labels:
+    app: {{ include "cloudflare-dns-updater.name" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "cloudflare-dns-updater.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "cloudflare-dns-updater.name" . }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+        - name: CLOUDFLARE_API_URL
+          value: {{ .Values.env.CLOUDFLARE_API_URL | quote }}
+        - name: CLOUDFLARE_DNS_NAME
+          value: {{ .Values.env.CLOUDFLARE_DNS_NAME | quote }}
+        - name: SLEEP_DURATION
+          value: {{ .Values.env.SLEEP_DURATION | quote }}
+        - name: CLOUDFLARE_AUTH_EMAIL
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.name }}
+              key: CLOUDFLARE_AUTH_EMAIL
+        - name: CLOUDFLARE_AUTH_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret.name }}
+              key: CLOUDFLARE_AUTH_KEY
+      restartPolicy: Always
+      imagePullSecrets:
+      - name: {{ .Values.imagePullSecrets[0].name }}
+
