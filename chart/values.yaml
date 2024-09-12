@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: registry.apps.aizuddinzali.com:5000/cloudflare-dns-update/rust-updater
+  repository: docker.io/mymzbe/cloudflare-dns-syncer:latest
   tag: latest
   pullPolicy: IfNotPresent
 
