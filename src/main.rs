@@ -43,6 +43,8 @@ async fn get_current_dns_record(url: &str, auth_email: &str, auth_key: &str) -> 
         .await?;
 
     let response_text = response.text().await?;
+    println!("Raw response from Cloudflare: {}", response_text);  // Add this line to log the response
+
     let dns_record_response: DnsRecordResponse = serde_json::from_str(&response_text)?;
     Ok(dns_record_response.result.content)
 }
