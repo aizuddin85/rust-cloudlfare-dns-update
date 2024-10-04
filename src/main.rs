@@ -43,19 +43,35 @@ async fn get_current_dns_record(url: &str, auth_email: &str, auth_key: &str) -> 
         .await?;
 
     let response_text = response.text().await?;
-    let dns_record_response: DnsRecordResponse = serde_json::from_str(&response_text)?;
-    Ok(dns_record_response.result.content)
+    
+    // Print the raw response for debugging purposes
+    println!("Raw response from server: {}", response_text);
+
+    // Try to deserialize the response and handle any errors
+    let dns_record_response: Result<DnsRecordResponse, _> = serde_json::from_str(&response_text);
+    
+    match dns_record_response {
+        Ok(dns_response) => Ok(dns_response.result.content),
+        Err(e) => {
+            eprintln!("Failed to parse DNS record response: {}. Raw response was: {}", e, response_text);
+            Err(Box::new(e))
+        }
+    }
 }
 
 async fn update_dns_record(public_ip: &str, url: &str, auth_email: &str, auth_key: &str, dns_name: &str) -> Result<(), Box<dyn std::error::Error>> {
     let client = Client::new();
+
+    // Check for the CLOUDFLARE_PROXIED env variable, defaulting to true if not set
+    let proxied = env::var("CLOUDFLARE_PROXIED")
+        .map_or(true, |val| val.to_lowercase() != "false");
 
     let dns_record = DnsRecord {
         record_type: "A".to_string(),
         name: dns_name.to_string(),
         content: public_ip.to_string(),
         ttl: 120,
-        proxied: true,
+        proxied,
     };
 
     let response = client
