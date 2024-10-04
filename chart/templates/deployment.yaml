@@ -23,6 +23,8 @@ spec:
           value: {{ .Values.env.CLOUDFLARE_API_URL | quote }}
         - name: CLOUDFLARE_DNS_NAME
           value: {{ .Values.env.CLOUDFLARE_DNS_NAME | quote }}
+        - name: CLOUDFLARE_PROXIED
+          value: {{ .Values.env.CLOUDFLARE_PROXIED | quote }}
         - name: SLEEP_DURATION
           value: {{ .Values.env.SLEEP_DURATION | quote }}
         - name: CLOUDFLARE_AUTH_EMAIL

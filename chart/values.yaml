@@ -12,6 +12,7 @@ env:
   CLOUDFLARE_API_URL: "https://api.cloudflare.com/client/v4/zones/f1ed32ad43ea28a3cfdfa4a3da10c9f6/dns_records/512399a7512c61ee627ee334a9793713"
   CLOUDFLARE_DNS_NAME: "www.aizuddinzali.com"
   SLEEP_DURATION: "10"
+  CLOUDFLARE_PROXIED: false
 
 secret:
   name: cloudflare-secrets
