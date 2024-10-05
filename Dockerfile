@@ -22,6 +22,8 @@ COPY --from=builder /usr/src/myapp/target/release/cloudflare_dns_updater /usr/lo
 # Set the working directory
 WORKDIR /usr/local/bin
 
+USER 1001
+
 # Set the entry point to the built binary
 ENTRYPOINT ["./cloudflare_dns_updater"]
 
