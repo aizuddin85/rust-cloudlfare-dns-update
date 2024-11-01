@@ -14,7 +14,7 @@ COPY src ./src
 RUN cargo build --release
 
 # Use the official Debian image for the final image
-FROM registry.access.redhat.com/ubi9/ubi:latest
+FROM registry.access.redhat.com/ubi9/ubi-minimal:latest
 
 # Copy the release binary from the builder image
 COPY --from=builder /usr/src/myapp/target/release/cloudflare_dns_updater /usr/local/bin/cloudflare_dns_updater
