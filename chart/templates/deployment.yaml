@@ -38,6 +38,8 @@ spec:
               name: {{ .Values.secret.name }}
               key: CLOUDFLARE_AUTH_KEY
       restartPolicy: Always
+      {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
       - name: {{ .Values.imagePullSecrets }}
+      {{- end }}
 
