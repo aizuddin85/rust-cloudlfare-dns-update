@@ -31,7 +31,7 @@ jobs:
           ${{ runner.os }}-cargo-registry-
 
     - name: Cache Cargo index
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: ~/.cargo/index
         key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
@@ -39,7 +39,7 @@ jobs:
           ${{ runner.os }}-cargo-index-
 
     - name: Cache Cargo build
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: target
         key: ${{ runner.os }}-cargo-build-${{ hashFiles('**/Cargo.lock') }}
@@ -53,7 +53,7 @@ jobs:
       uses: docker/setup-buildx-action@v1
 
     - name: Cache Docker layers
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: /tmp/.buildx-cache
         key: ${{ runner.os }}-buildx-${{ github.sha }}
