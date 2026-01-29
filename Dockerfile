@@ -1,5 +1,5 @@
 # Use the official Rust image as the base image
-FROM docker.io/library/rust:latest as builder
+FROM docker.io/library/rust:latest AS builder
 
 # Set the working directory inside the container
 WORKDIR /usr/src/myapp
