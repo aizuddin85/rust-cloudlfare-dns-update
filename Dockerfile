@@ -1,6 +1,6 @@
 # --- Stage 1: Build ---
 # Updated to 1.82-slim to satisfy zerovec requirements
-FROM docker.io/library/rust:latest as builder
+FROM docker.io/library/rust:latest AS builder
 
 WORKDIR /usr/src/myapp
 
