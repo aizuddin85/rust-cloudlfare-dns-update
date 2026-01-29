@@ -1,26 +1,29 @@
-# --- Stage 1: Build ---
-# Updated to 1.82-slim to satisfy zerovec requirements
-FROM docker.io/library/rust:latest AS builder
+# Use the official Rust image as the base image
+FROM docker.io/library/rust:latest as builder
 
+# Set the working directory inside the container
 WORKDIR /usr/src/myapp
 
-# Install build dependencies (openssl and pkg-config are often needed for Rust network crates)
-RUN apt-get update && apt-get install -y pkg-config libssl-dev && rm -rf /var/lib/apt/lists/*
+# Copy the Cargo.toml and Cargo.lock files
+COPY Cargo.toml ./
 
-# Cache dependencies
-COPY Cargo.toml Cargo.lock ./
-RUN mkdir src && echo "fn main() {}" > src/main.rs && cargo build --release
-
-# Build actual source
+# Copy the source code
 COPY src ./src
-RUN touch src/main.rs && cargo build --release
 
-# --- Stage 2: Runtime ---
-# Using the 'cc' variant because most Rust networking crates link against glibc
-FROM gcr.io/distroless/cc-debian13:latest
+# Install dependencies and build the release binary
+RUN cargo build --release
 
-COPY --from=builder /usr/src/myapp/target/release/cloudflare_dns_updater /usr/local/bin/
+# Use the official Debian image for the final image
+FROM registry.access.redhat.com/ubi9/ubi-minimal:latest
 
-USER nonroot:nonroot
+# Copy the release binary from the builder image
+COPY --from=builder /usr/src/myapp/target/release/cloudflare_dns_updater /usr/local/bin/cloudflare_dns_updater
 
-ENTRYPOINT ["/usr/local/bin/cloudflare_dns_updater"]
+# Set the working directory
+WORKDIR /usr/local/bin
+
+USER 1001
+
+# Set the entry point to the built binary
+ENTRYPOINT ["./cloudflare_dns_updater"]
+
